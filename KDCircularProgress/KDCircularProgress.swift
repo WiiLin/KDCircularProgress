@@ -191,6 +191,7 @@ public class KDCircularProgress: UIView, CAAnimationDelegate {
         progressLayer.setNeedsDisplay()
     }
     
+    public private(set) var animation: CABasicAnimation?
     public func animate(fromAngle: Double, toAngle: Double, duration: TimeInterval, relativeDuration: Bool = true, completion: ((Bool) -> Void)?) {
         pauseIfAnimating()
         let animationDuration: TimeInterval
@@ -203,6 +204,7 @@ public class KDCircularProgress: UIView, CAAnimationDelegate {
         }
         
         let animation = CABasicAnimation(keyPath: #keyPath(KDCircularProgressViewLayer.angle))
+        animation.beginTime = CACurrentMediaTime()
         animation.fromValue = fromAngle
         animation.toValue = toAngle
         animation.duration = animationDuration
@@ -212,6 +214,7 @@ public class KDCircularProgress: UIView, CAAnimationDelegate {
         animationCompletionBlock = completion
         
         progressLayer.add(animation, forKey: "angle")
+        self.animation = animation
     }
     
     public func animate(toAngle: Double, duration: TimeInterval, relativeDuration: Bool = true, completion: ((Bool) -> Void)?) {
